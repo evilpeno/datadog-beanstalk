@@ -18,10 +18,14 @@ class BeanstalkdCheck(AgentCheck):
         Our plugin output must be a flat dict. Since each tube returns the
         same key/value stats we must prefix key names with the tube name e.g.
         the key total-jobs for tube 'email_signup' becomes email_signup-total-jobs.
+        Ignores any string metrics as datadog-agent can only accept 
+        float convertable types.
         '''
         new_dict = {}
 
         for k, v in stats.items():
+            if k in ['name','id']:
+                continue
             key = '%s-%s' % (tube_name, k)
             new_dict[key] = v
 
@@ -43,6 +47,9 @@ class BeanstalkdCheck(AgentCheck):
         stats.update(self.get_tube_stats())
 
         for k, v in stats.items():
+            # "id" and "hostname" are collected, but can't be gauged.
+            if k in ['id', 'hostname']:
+                continue
             self.gauge('beanstalkd.%s' % k,   v)
 
         # Close the connection
