@@ -3,9 +3,10 @@
 ## Beanstalk Datadog Agent Check ##
 
 ### Install ###
-* Put beanstalkd.py in /etc/dd-agent/checks.d/
-* Put beanstalkd.yml in /etc/dd-agent/conf.d/
-* Restart dd-agent
+* Install prereqs through `sudo -u dd-agent /opt/datadog-agent/embedded/bin/pip install beanstalkc PyYAML`
+* Put beanstalkd.py in /etc/datadog-agent/checks.d/
+* Put beanstalkd.yml in /etc/datadog-agent/conf.d/
+* Restart datadog-agent
 
 ### Dependencies ###
 
